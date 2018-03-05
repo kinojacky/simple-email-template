@@ -1,0 +1,375 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Simple Transactional Email</title>
+    <style>
+      /* -------------------------------------
+          GLOBAL RESETS
+      ------------------------------------- */
+      img {
+        border: none;
+        -ms-interpolation-mode: bicubic;
+        max-width: 100%; }
+
+      body {
+        background-color: #f6f6f6;
+        font-family: sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0; 
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; }
+
+      table {
+        border-collapse: separate;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+        width: 100%; }
+        table td {
+          font-family: sans-serif;
+          font-size: 14px;
+          vertical-align: top; }
+
+      /* -------------------------------------
+          BODY & CONTAINER
+      ------------------------------------- */
+
+      .body {
+        background-color: #f6f6f6;
+        width: 100%; }
+
+      /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+      .container {
+        display: block;
+        Margin: 0 auto !important;
+        /* makes it centered */
+        max-width: 580px;
+        padding: 10px;
+        width: 580px; }
+
+      /* This should also be a block element, so that it will fill 100% of the .container */
+      .content {
+        box-sizing: border-box;
+        display: block;
+        Margin: 0 auto;
+        max-width: 580px;
+        padding: 10px; }
+
+      /* -------------------------------------
+          HEADER, FOOTER, MAIN
+      ------------------------------------- */
+      .main {
+        background: #fff;
+        border-radius: 3px;
+        width: 100%; }
+
+      .wrapper {
+        box-sizing: border-box;
+        padding: 20px; }
+
+      .footer {
+        clear: both;
+        padding-top: 10px;
+        text-align: center;
+        width: 100%; }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+          color: #999999;
+          font-size: 12px;
+          text-align: center; }
+
+      /* -------------------------------------
+          TYPOGRAPHY
+      ------------------------------------- */
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #000000;
+        font-family: sans-serif;
+        font-weight: 400;
+        line-height: 1.4;
+        margin: 0;
+        Margin-bottom: 30px; }
+
+      h1 {
+        font-size: 35px;
+        font-weight: 300;
+        text-align: center;
+        text-transform: capitalize; }
+
+      p,
+      ul,
+      ol {
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+        Margin-bottom: 15px; }
+        p li,
+        ul li,
+        ol li {
+          list-style-position: inside;
+          margin-left: 5px; }
+
+      a {
+        color: #3498db;
+        text-decoration: underline; }
+
+      /* -------------------------------------
+          BUTTONS
+      ------------------------------------- */
+      .btn {
+        box-sizing: border-box;
+        width: 100%; }
+        .btn > tbody > tr > td {
+          padding-bottom: 15px; }
+        .btn table {
+          width: auto; }
+        .btn table td {
+          background-color: #ffffff;
+          border-radius: 5px;
+          text-align: center; }
+        .btn a {
+          background-color: #ffffff;
+          border: solid 1px #3498db;
+          border-radius: 5px;
+          box-sizing: border-box;
+          color: #3498db;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 14px;
+          font-weight: bold;
+          margin: 0;
+          padding: 12px 25px;
+          text-decoration: none;
+          text-transform: capitalize; }
+
+      .btn-primary table td {
+        background-color: #3498db; }
+
+      .btn-primary a {
+        background-color: #3498db;
+        border-color: #3498db;
+        color: #ffffff; }
+
+      /* -------------------------------------
+          OTHER STYLES THAT MIGHT BE USEFUL
+      ------------------------------------- */
+      .last {
+        margin-bottom: 0; }
+
+      .first {
+        margin-top: 0; }
+
+      .align-center {
+        text-align: center; }
+
+      .align-right {
+        text-align: right; }
+
+      .align-left {
+        text-align: left; }
+
+      .clear {
+        clear: both; }
+
+      .mt0 {
+        margin-top: 0; }
+
+      .mb0 {
+        margin-bottom: 0; }
+
+      .preheader {
+        color: transparent;
+        display: none;
+        height: 0;
+        max-height: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        mso-hide: all;
+        visibility: hidden;
+        width: 0; }
+
+      .powered-by a {
+        text-decoration: none; }
+
+      hr {
+        border: 1px;
+        border-bottom: 1px solid #FF0055;
+        Margin: 20px 0; }
+
+      /* -------------------------------------
+          RESPONSIVE AND MOBILE FRIENDLY STYLES
+      ------------------------------------- */
+      @media only screen and (max-width: 620px) {
+        table[class=body] h1 {
+          font-size: 28px !important;
+          margin-bottom: 10px !important; }
+        table[class=body] p,
+        table[class=body] ul,
+        table[class=body] ol,
+        table[class=body] td,
+        table[class=body] span,
+        table[class=body] a {
+          font-size: 16px !important; }
+        table[class=body] .wrapper,
+        table[class=body] .article {
+          padding: 10px !important; }
+        table[class=body] .content {
+          padding: 0 !important; }
+        table[class=body] .container {
+          padding: 0 !important;
+          width: 100% !important; }
+        table[class=body] .main {
+          border-left-width: 0 !important;
+          border-radius: 0 !important;
+          border-right-width: 0 !important; }
+        table[class=body] .btn table {
+          width: 100% !important; }
+        table[class=body] .btn a {
+          width: 100% !important; }
+        table[class=body] .img-responsive {
+          height: auto !important;
+          max-width: 100% !important;
+          width: auto !important; }}
+
+      /* -------------------------------------
+          PRESERVE THESE STYLES IN THE HEAD
+      ------------------------------------- */
+      @media all {
+        .ExternalClass {
+          width: 100%; }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%; }
+        .apple-link a {
+          color: inherit !important;
+          font-family: inherit !important;
+          font-size: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+          text-decoration: none !important; } 
+        .btn-primary table td:hover {
+          background-color: #34495e !important; }
+        .btn-primary a:hover {
+          background-color: #34495e !important;
+          border-color: #34495e !important; } }
+
+    </style>
+  </head>
+
+  <!-- SVG Library -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+
+  <symbol id="logo" viewBox="0 0 112.5 45"><title>top_mart_logos_red_reu</title><image width="150" height="60" transform="scale(.75)" xlink:href="data:image/png;base64,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"/></symbol>
+  </svg>
+
+  <body class="">
+    <table border="0" cellpadding="0" cellspacing="0" class="body">
+      <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+          <div class="content">
+
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
+            <div class="align-left">
+              <a href="#"><svg style="width:155px;height:60px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#logo"></use></svg></a>
+            </div>
+            <table class="main">
+
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td>
+                        <h2><%= @frontpage.name %> 的估價單資訊預覽</h2>
+
+                        <p>您好！</p>
+                        <p>收到這封 E-Mail 表示您填妥的估價單已經送出，以下是基本資料預覽：</p>
+                          <hr>
+                        <p>聯絡人姓名： <%= @frontpage.name %></p>
+                        <p>身份：<%= @frontpage.occupation %></p>
+                        <p>系所名稱　：<%= @frontpage.department %></p>
+                        <p>辦公室位置或代碼：<%= @frontpage.office_code %></p>
+                        <p>實驗室電話分機：<%= @frontpage.phone %></p>
+                        <p>聯絡人 E-Mail：<%= @frontpage.email %></p>
+                        <p>聯絡人手機：<%= @frontpage.cell_phone %></p>
+                        <p>聯絡人 LINE ID：<%= @frontpage.line_id %></p>
+                        <p>整體報價需求說明：<%= @frontpage.requirement %></p>
+                          <hr>
+                        <p>產品名稱：<%= @frontpage.product_01 %></p>
+                        <p>參考連結：<%= @frontpage.weblink_01 %></p>
+                        <p>需求備註：<%= @frontpage.require_01 %></p>
+                          <hr>
+                        <p>產品名稱：<%= @frontpage.product_02 %></p>
+                        <p>參考連結：<%= @frontpage.weblink_02 %></p>
+                        <p>需求備註：<%= @frontpage.require_02 %></p>
+                          <hr>
+                        <p>產品名稱：<%= @frontpage.product_03 %></p>
+                        <p>參考連結：<%= @frontpage.weblink_03 %></p>
+                        <p>需求備註：<%= @frontpage.require_03 %></p>
+                          <hr>
+                        <p>產品名稱：<%= @frontpage.product_04 %></p>
+                        <p>參考連結：<%= @frontpage.weblink_04 %></p>
+                        <p>需求備註：<%= @frontpage.require_04 %></p>
+                          <hr>
+                        <p>產品名稱：<%= @frontpage.product_05 %></p>
+                        <p>參考連結：<%= @frontpage.weblink_05 %></p>
+                        <p>需求備註：<%= @frontpage.require_05 %></p>
+                        <hr>
+
+                        <p>以上一資料確認後，我們會於 24 小時內聯絡您並送出估價單，請您耐心等候。</p>
+
+                        <p>若有任何問題，請不要害羞與我們連路！</p>
+                        <p>祝您有個美好的一天</p>
+                        <br>
+                        <br>
+                        <br>
+                        <p>P/S：這是一封預覽估價單確認信，請勿直接回覆本訊息</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- END MAIN CONTENT AREA -->
+              </table>
+
+            <!-- START FOOTER -->
+            <div class="footer">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="content-block">
+                    <span class="apple-link">Playsure Technology Co., Ltd. 
+                    <br><a href="http://www.playsure.com.tw">www.playsure.com.tw</a>
+                    <br>email: service@playsure.com.tw
+                    <br>tel: 06-2750080　　fax: 06-2083560</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- END FOOTER -->
+            
+<!-- END CENTERED WHITE CONTAINER --></div>
+        </td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
+
